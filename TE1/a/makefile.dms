@@ -1,0 +1,32 @@
+
+CPPC = g++
+CFLAGS = -W -Wall -Wshadow -pedantic -std=c++17
+SRCS = fcts.cpp util.cpp methode.cpp main.cpp
+RM = rm -f
+
+OBJS = $(SRCS:.cpp=.o) # fichiers objets
+
+# Complèter la première règle => pour l'exécutable
+a.out : main.o fcts.o methode.o util.o
+	$(CPPC) main.o fcts.o methode.o util.o
+
+# Exemple de règle pour fcts.o
+fcts.o : fcts.cpp fcts.h
+	$(CPPC) -c $(CFLAGS) fcts.cpp
+# ou mieux avec $<, qui désigne la première dépendance
+#	$(CPPC) -c $(CFLAGS) $<
+
+# Ecrire ci-dessous les règles pour les autres fichiers sources
+main.o : main.cpp fcts.h
+	$(CPPC) -c $(CFLAGS) main.cpp
+methode.o : methode.cpp methode.h
+	$(CPPC) -c $(CFLAGS) methode.cpp
+util.o : util.cpp util.h
+	$(CPPC) -c $(CFLAGS) util.cpp
+
+# Exemples de règles pour le ménage
+clean :
+	$(RM) $(OBJS)
+
+super_clean :
+	$(RM) $(OBJS) a.out
