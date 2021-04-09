@@ -1,0 +1,35 @@
+CPPC = g++
+CFLAGS = -W -Wall -Wshadow -pedantic -std=c++17
+SRCS = matrices.cpp main.cpp condlim.cpp io.cpp
+RM = rm -f
+
+OBJS = $(SRCS:.cpp=.o) # fichiers objets
+
+# Complèter la première règle => pour l'exécutable
+deriv : main.o matrices.o condlim.o io.o
+	$(CPPC) $^ -o $@
+
+# ou mieux avec $<, qui désigne la première dépendance
+#	$(CPPC) -c $(CFLAGS) $<
+
+# Ecrire ci-dessous les règles pour les autres fichiers sources
+main.o : main.cpp matrices.cpp condlim.cpp io.cpp
+	$(CPPC) -c $(CFLAGS) main.cpp
+matrices.o : matrices.cpp matrices.h
+	$(CPPC) -c $(CFLAGS) matrices.cpp
+
+condlim.o : condlim.cpp condlim.h
+	$(CPPC) -c $(CFLAGS) condlim.cpp
+
+io.o : io.cpp io.h
+	$(CPPC) -c $(CFLAGS) io.cpp
+
+%.o : %.cpp %.h
+	$(CPPC) -c $(CFLAGS) $<
+
+# Exemples de règles pour le ménage
+clean :
+	$(RM) $(OBJS)
+
+super_clean :
+	$(RM) $(OBJS) a.out
